@@ -16,6 +16,8 @@ let filteredPolls = [];
 document.addEventListener("DOMContentLoaded", async () => {
   setupThemeToggle();
   setupQuickSearch();
+  setupExportButtons();
+
   await loadDashboardData();
 });
 
