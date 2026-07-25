@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Dashboard Eleições Presidenciais 2026</title>
+
+  <!-- Bootstrap -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+  >
+
+  <!-- Leaflet -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  >
+
+  <!-- Estilos próprios -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <!-- Navbar principal -->
+  <nav class="navbar navbar-expand-lg navbar-dark dashboard-navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <i class="fa-solid fa-landmark"></i>
+        <span>Brasil 2026</span>
+      </a>
+
+      <div class="d-flex align-items-center gap-3">
+        <small class="text-light-emphasis">
+          <i class="fa-regular fa-clock me-1"></i>
+          Atualização: <span id="lastUpdate">--/--/----</span>
+        </small>
+
+        <button
+          id="themeToggle"
+          class="btn btn-outline-light btn-sm"
+          type="button"
+          aria-label="Alternar tema"
+        >
+          <i class="fa-solid fa-sun"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container-fluid py-4">
+    <!-- Cabeçalho -->
+    <section class="mb-4">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <div>
+          <p class="section-label mb-1">ANÁLISE ELEITORAL</p>
+          <h1 class="h2 mb-1">Eleições Presidenciais 2026</h1>
+          <p class="text-body-secondary mb-0">
+            Acompanhamento de pesquisas eleitorais registradas.
+          </p>
+        </div>
+
+        <div class="input-group dashboard-search">
+          <span class="input-group-text">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </span>
+
+          <input
+            type="search"
+            id="quickSearch"
+            class="form-control"
+            placeholder="Pesquisar candidato ou instituto..."
+          >
+        </div>
+      </div>
+    </section>
+
+    <div class="row g-4">
+      <!-- Área de filtros -->
+      <aside class="col-12 col-lg-3 col-xl-2">
+        <div class="card dashboard-card filters-card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h2 class="h6 mb-0">
+                <i class="fa-solid fa-sliders me-2"></i>Filtros
+              </h2>
+
+              <button id="clearFilters" class="btn btn-sm btn-link p-0" type="button">
+                Limpar
+              </button>
+            </div>
+
+            <div id="filtersContainer">
+              <!-- Os filtros serão inseridos na Etapa 4 -->
+              <p class="text-body-secondary small mb-0">
+                Os filtros serão carregados aqui.
+              </p>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Conteúdo do painel -->
+      <section class="col-12 col-lg-9 col-xl-10">
+        <!-- Estado de carregamento -->
+        <div id="loadingState" class="text-center py-5">
+          <div class="spinner-border text-primary mb-3" role="status">
+            <span class="visually-hidden">Carregando dados...</span>
+          </div>
+          <p class="text-body-secondary">Preparando o dashboard...</p>
+        </div>
+
+        <!-- Mensagens de erro -->
+        <div id="alertContainer"></div>
+
+        <!-- Dashboard -->
+        <div id="dashboardContent" class="d-none">
+          <!-- KPIs -->
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-sm-6 col-xl">
+              <article class="card dashboard-card kpi-card">
+                <div class="card-body">
+                  <span class="kpi-label">Total de pesquisas</span>
+                  <strong id="kpiTotalPolls" class="kpi-value">0</strong>
+                </div>
+              </article>
+            </div>
+
+            <div class="col-12 col-sm-6 col-xl">
+              <article class="card dashboard-card kpi-card">
+                <div class="card-body">
+                  <span class="kpi-label">Total de candidatos</span>
+                  <strong id="kpiCandidates" class="kpi-value">0</strong>
+                </div>
+              </article>
+            </div>
+
+            <div class="col-12 col-sm-6 col-xl">
+              <article class="card dashboard-card kpi-card">
+                <div class="card-body">
+                  <span class="kpi-label">Média nacional</span>
+                  <strong id="kpiAverage" class="kpi-value">0%</strong>
+                </div>
+              </article>
+            </div>
+
+            <div class="col-12 col-sm-6 col-xl">
+              <article class="card dashboard-card kpi-card">
+                <div class="card-body">
+                  <span class="kpi-label">Última pesquisa</span>
+                  <strong id="kpiLastPoll" class="kpi-value kpi-date">--/--/----</strong>
+                </div>
+              </article>
+            </div>
+
+            <div class="col-12 col-sm-6 col-xl">
+              <article class="card dashboard-card kpi-card">
+                <div class="card-body">
+                  <span class="kpi-label">Entrevistados</span>
+                  <strong id="kpiRespondents" class="kpi-value">0</strong>
+                </div>
+              </article>
+            </div>
+
+            <div class="col-12 col-sm-6 col-xl">
+              <article class="card dashboard-card kpi-card">
+                <div class="card-body">
+                  <span class="kpi-label">Margem média</span>
+                  <strong id="kpiMarginError" class="kpi-value">0%</strong>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <!-- Barra de ações -->
+          <div class="d-flex flex-wrap gap-2 justify-content-end mb-4">
+            <button id="exportPng" class="btn btn-outline-primary btn-sm" type="button">
+              <i class="fa-solid fa-image me-1"></i> PNG
+            </button>
+
+            <button id="exportPdf" class="btn btn-outline-primary btn-sm" type="button">
+              <i class="fa-solid fa-file-pdf me-1"></i> PDF
+            </button>
+
+            <button id="exportExcel" class="btn btn-outline-primary btn-sm" type="button">
+              <i class="fa-solid fa-file-excel me-1"></i> Excel
+            </button>
+          </div>
+
+          <!-- Gráficos -->
+          <div class="row g-4">
+            <div class="col-12 col-xxl-8">
+              <article class="card dashboard-card chart-card">
+                <div class="card-body">
+                  <h2 class="chart-title">Evolução das intenções de voto</h2>
+                  <div id="voteEvolutionChart"></div>
+                </div>
+              </article>
+            </div>
+
+            <div class="col-12 col-xxl-4">
+              <article class="card dashboard-card chart-card">
+                <div class="card-body">
+                  <h2 class="chart-title">Participação por instituto</h2>
+                  <div id="instituteDonutChart"></div>
+                </div>
+              </article>
+            </div>
+
+            <div class="col-12 col-xl-6">
+              <article class="card dashboard-card chart-card">
+                <div class="card-body">
+                  <h2 class="chart-title">Comparação entre candidatos</h2>
+                  <div id="candidateComparisonChart"></div>
+                </div>
+              </article>
+            </div>
+
+            <div class="col-12 col-xl-6">
+              <article class="card dashboard-card chart-card">
+                <div class="card-body">
+                  <h2 class="chart-title">Histórico mensal das pesquisas</h2>
+                  <div id="monthlyHistoryChart"></div>
+                </div>
+              </article>
+            </div>
+
+            <div class="col-12 col-xl-6">
+              <article class="card dashboard-card chart-card">
+                <div class="card-body">
+                  <h2 class="chart-title">Ranking dos institutos</h2>
+                  <div id="instituteRankingChart"></div>
+                </div>
+              </article>
+            </div>
+
+            <div class="col-12 col-xl-6">
+              <article class="card dashboard-card chart-card">
+                <div class="card-body">
+                  <h2 class="chart-title">Média móvel das intenções de voto</h2>
+                  <div id="movingAverageChart"></div>
+                </div>
+              </article>
+            </div>
+
+            <div class="col-12 col-xl-6">
+              <article class="card dashboard-card chart-card">
+                <div class="card-body">
+                  <h2 class="chart-title">Distribuição regional</h2>
+                  <div id="brazilMap" class="brazil-map"></div>
+                </div>
+              </article>
+            </div>
+
+            <div class="col-12 col-xl-6">
+              <article class="card dashboard-card chart-card">
+                <div class="card-body">
+                  <h2 class="chart-title">Heatmap por estado</h2>
+                  <div id="stateHeatmapChart"></div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Bibliotecas -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.54.1"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+
+  <!-- Scripts do projeto -->
+  <script src="js/utils.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
