@@ -1,0 +1,249 @@
+/* =========================================================
+   DASHBOARD ELEIÇÕES PRESIDENCIAIS 2026
+   Estilos globais, tema e componentes visuais
+   ========================================================= */
+
+/* Variáveis do tema escuro (padrão) */
+:root {
+  --bg-primary: #0b1628;
+  --bg-secondary: #12233d;
+  --bg-card: #162b49;
+  --bg-hover: #1c385d;
+
+  --text-primary: #f8fafc;
+  --text-secondary: #a8b6ca;
+
+  --border-color: rgba(255, 255, 255, 0.1);
+  --primary-color: #2d8cff;
+  --success-color: #27c08a;
+  --danger-color: #f05b69;
+  --warning-color: #f7b84b;
+
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.18);
+  --transition-default: all 0.25s ease;
+}
+
+/* Variáveis aplicadas quando o tema claro for ativado */
+html[data-bs-theme="light"] {
+  --bg-primary: #f2f5f9;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-hover: #edf4ff;
+
+  --text-primary: #172033;
+  --text-secondary: #667085;
+
+  --border-color: rgba(23, 32, 51, 0.12);
+  --shadow-card: 0 10px 25px rgba(15, 23, 42, 0.08);
+}
+
+/* Configuração global da página */
+body {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: Arial, Helvetica, sans-serif;
+  transition: var(--transition-default);
+}
+
+/* Barra de navegação superior */
+.dashboard-navbar {
+  min-height: 68px;
+  background: linear-gradient(90deg, #081526, #12345d);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.navbar-brand {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.navbar-brand i {
+  color: var(--success-color);
+}
+
+/* Texto pequeno acima do título */
+.section-label {
+  color: var(--primary-color);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+}
+
+/* Campo de pesquisa */
+.dashboard-search {
+  max-width: 360px;
+}
+
+.dashboard-search .input-group-text,
+.dashboard-search .form-control {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dashboard-search .form-control::placeholder {
+  color: var(--text-secondary);
+}
+
+/* Cartões compartilhados */
+.dashboard-card {
+  height: 100%;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  box-shadow: var(--shadow-card);
+  transition: var(--transition-default);
+}
+
+.dashboard-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(45, 140, 255, 0.45);
+}
+
+/* Cartões de indicadores */
+.kpi-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi-card::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background-color: var(--primary-color);
+  content: "";
+}
+
+.kpi-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.kpi-value {
+  display: block;
+  color: var(--text-primary);
+  font-size: 1.65rem;
+  font-weight: 700;
+}
+
+.kpi-date {
+  font-size: 1.1rem;
+}
+
+/* Cartão dos filtros */
+.filters-card {
+  position: sticky;
+  top: 1rem;
+}
+
+.filters-card .btn-link {
+  color: var(--primary-color);
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+/* Títulos dos gráficos */
+.chart-title {
+  margin-bottom: 1.25rem;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* Área reservada para o Leaflet */
+.brazil-map {
+  min-height: 360px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Ajustes para controles Bootstrap */
+.form-control,
+.form-select,
+.input-group-text {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: var(--bg-secondary);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(45, 140, 255, 0.2);
+  color: var(--text-primary);
+}
+
+.form-select option {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* Botões */
+.btn-outline-primary {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #ffffff;
+}
+
+/* Estado de carregamento */
+#loadingState {
+  color: var(--text-primary);
+}
+
+/* Elementos inseridos dinamicamente pelo JavaScript */
+.filter-group {
+  margin-bottom: 1rem;
+}
+
+.filter-group label {
+  margin-bottom: 0.4rem;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Responsividade */
+@media (max-width: 991.98px) {
+  .filters-card {
+    position: static;
+  }
+
+  .dashboard-search {
+    max-width: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .dashboard-navbar {
+    min-height: auto;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+  }
+
+  .navbar-brand {
+    font-size: 1rem;
+  }
+
+  .kpi-value {
+    font-size: 1.4rem;
+  }
+
+  .brazil-map {
+    min-height: 300px;
+  }
+}
