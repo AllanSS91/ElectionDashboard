@@ -197,3 +197,23 @@ function getDashboardBackground() {
 
   return currentTheme === "light" ? "#f2f5f9" : "#0b1628";
 }
+
+/**
+ * Aguarda um intervalo antes de executar uma função.
+ * Evita atualizações excessivas durante a digitação.
+ *
+ * @param {Function} callback Função a executar.
+ * @param {number} delay Tempo de espera em milissegundos.
+ * @returns {Function} Função com atraso.
+ */
+function debounce(callback, delay = 300) {
+  let timeoutId;
+
+  return (...args) => {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => {
+      callback(...args);
+    }, delay);
+  };
+}

@@ -258,3 +258,23 @@ body {
   border-color: var(--border-color) !important;
   color: var(--text-primary) !important;
 }
+
+/* Acessibilidade: reduz animações quando solicitado pelo sistema operacional. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Destaque visível para navegação por teclado. */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 2px;
+}

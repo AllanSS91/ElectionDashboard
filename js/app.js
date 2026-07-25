@@ -67,7 +67,10 @@ async function loadDashboardData() {
  */
 function parseCsv(csvContent) {
   const lines = csvContent.trim().split(/\r?\n/);
-  const headers = lines[0].split(",").map((header) => header.trim());
+  const headers = lines[0]
+    .replace(/^\uFEFF/, "")
+    .split(",")
+    .map((header) => header.trim());
 
   return lines
     .slice(1)
@@ -188,11 +191,13 @@ function setupThemeToggle() {
 function setupQuickSearch() {
   const searchInput = document.getElementById("quickSearch");
 
-  searchInput.addEventListener("input", () => {
+  const applySearchWithDelay = debounce(() => {
     if (typeof applyFilters === "function") {
       applyFilters();
     }
-  });
+  }, 250);
+
+  searchInput.addEventListener("input", applySearchWithDelay);
 }
 
 /**
