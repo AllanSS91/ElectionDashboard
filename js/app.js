@@ -166,6 +166,7 @@ function setupThemeToggle() {
     const nextTheme = currentTheme === "dark" ? "light" : "dark";
 
     html.setAttribute("data-bs-theme", nextTheme);
+    updateDashboard();
 
     themeButton.innerHTML =
       nextTheme === "dark"
