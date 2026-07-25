@@ -247,3 +247,14 @@ body {
     min-height: 300px;
   }
 }
+
+/* Mapa Leaflet */
+.brazil-map {
+  background-color: #10233d;
+}
+
+.leaflet-control-zoom a {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
