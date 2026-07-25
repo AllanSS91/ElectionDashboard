@@ -79,6 +79,7 @@ function renderVoteEvolutionChart(polls) {
 
   const theme = getChartTheme();
   const candidates = getUniqueValues(polls, "candidato");
+  const allDates = [...new Set(polls.map((poll) => poll.data))].sort();
   const voteValues = polls.map((poll) => poll.intencao_voto);
   const lowestVote = Math.min(...voteValues);
   const highestVote = Math.max(...voteValues);
@@ -92,9 +93,22 @@ function renderVoteEvolutionChart(polls) {
 
   const series = candidates.map((candidate) => ({
     name: candidate,
-    data: getAverageByDate(
-      polls.filter((poll) => poll.candidato === candidate)
-    )
+    data: allDates.map((date) => {
+      const datePolls = polls.filter(
+        (poll) => poll.candidato === candidate && poll.data === date
+      );
+
+      if (!datePolls.length) {
+        return 0;
+      }
+
+      const totalVotes = datePolls.reduce(
+        (total, poll) => total + poll.intencao_voto,
+        0
+      );
+
+      return Number((totalVotes / datePolls.length).toFixed(1));
+    })
   }));
 
   chartInstances[chartId] = new ApexCharts(
@@ -111,8 +125,12 @@ function renderVoteEvolutionChart(polls) {
       stroke: { curve: "smooth", width: 3 },
       markers: { size: 4 },
       xaxis: {
-        type: "datetime",
-        labels: { style: { colors: theme.mutedColor } }
+        type: "category",
+        categories: allDates.map(formatResearchDate),
+        labels: {
+          rotate: -45,
+          style: { colors: theme.mutedColor }
+        }
       },
       yaxis: {
         min: dynamicMin,
@@ -130,10 +148,8 @@ function renderVoteEvolutionChart(polls) {
       },
       tooltip: {
         theme: document.documentElement.getAttribute("data-bs-theme"),
-        shared: false,
-        intersect: true,
-        followCursor: true,
-         x: { format: "dd/MM/yyyy" },
+        shared: true,
+        intersect: false,
         y: { formatter: (value) => `${value.toFixed(1)}%` }
     }
     }
@@ -412,10 +428,7 @@ const series = candidates.map((candidate) => {
      alinhados entre todos os candidatos. */
   return {
     name: candidate,
-    data: allDates.map((date) => [
-      new Date(`${date}T12:00:00`).getTime(),
-      movingAverageByDate[date] ?? 0
-    ])
+    data: allDates.map((date) => movingAverageByDate[date] ?? 0)
   };
 });
 
@@ -432,8 +445,12 @@ const series = candidates.map((candidate) => {
       colors: theme.colors,
       stroke: { curve: "smooth", width: 3, dashArray: 4 },
       xaxis: {
-        type: "datetime",
-        labels: { style: { colors: theme.mutedColor } }
+        type: "category",
+        categories: allDates.map(formatResearchDate),
+        labels: {
+          rotate: -45,
+          style: { colors: theme.mutedColor }
+        }
       },
       yaxis: {
         labels: {
@@ -450,7 +467,6 @@ const series = candidates.map((candidate) => {
         theme: document.documentElement.getAttribute("data-bs-theme"),
         shared: true,
         intersect: false,
-        x: { format: "dd/MM/yyyy" },
         y: {
         formatter: (value) => `${value.toFixed(1)}%`
         }
@@ -632,4 +648,14 @@ function formatMonth(month) {
     month: "short",
     year: "2-digit"
   }).format(date);
+}
+
+/**
+ * Formata a data real de uma pesquisa para o eixo horizontal.
+ */
+function formatResearchDate(dateString) {
+  return new Intl.DateTimeFormat("pt-BR", {
+    day: "2-digit",
+    month: "2-digit"
+  }).format(new Date(`${dateString}T12:00:00`));
 }
