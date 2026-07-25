@@ -1,0 +1,21 @@
+data,instituto,candidato,partido,uf,regiao,turno,intencao_voto,entrevistados,margem_erro
+2026-01-15,DataBrasil,Marina Silva,REDE,SP,Sudeste,1,28,2000,2.2
+2026-01-15,DataBrasil,João Almeida,PSD,SP,Sudeste,1,25,2000,2.2
+2026-01-15,DataBrasil,Carlos Souza,PL,SP,Sudeste,1,21,2000,2.2
+2026-02-10,Instituto Nacional,Marina Silva,REDE,RJ,Sudeste,1,30,1800,2.3
+2026-02-10,Instituto Nacional,João Almeida,PSD,RJ,Sudeste,1,24,1800,2.3
+2026-02-10,Instituto Nacional,Carlos Souza,PL,RJ,Sudeste,1,22,1800,2.3
+2026-03-12,Poder Pesquisa,Marina Silva,REDE,MG,Sudeste,1,31,2200,2.1
+2026-03-12,Poder Pesquisa,João Almeida,PSD,MG,Sudeste,1,26,2200,2.1
+2026-03-12,Poder Pesquisa,Carlos Souza,PL,MG,Sudeste,1,20,2200,2.1
+2026-04-08,DataBrasil,Marina Silva,REDE,BA,Nordeste,1,33,1600,2.5
+2026-04-08,DataBrasil,João Almeida,PSD,BA,Nordeste,1,22,1600,2.5
+2026-04-08,DataBrasil,Carlos Souza,PL,BA,Nordeste,1,19,1600,2.5
+2026-05-14,Instituto Nacional,Marina Silva,REDE,RS,Sul,1,29,1900,2.3
+2026-05-14,Instituto Nacional,João Almeida,PSD,RS,Sul,1,27,1900,2.3
+2026-05-14,Instituto Nacional,Carlos Souza,PL,RS,Sul,1,23,1900,2.3
+2026-06-18,Poder Pesquisa,Marina Silva,REDE,GO,Centro-Oeste,2,48,2100,2.1
+2026-06-18,Poder Pesquisa,João Almeida,PSD,GO,Centro-Oeste,2,44,2100,2.1
+2026-07-20,DataBrasil,Marina Silva,REDE,PA,Norte,1,32,1700,2.4
+2026-07-20,DataBrasil,João Almeida,PSD,PA,Norte,1,23,1700,2.4
+2026-07-20,DataBrasil,Carlos Souza,PL,PA,Norte,1,18,1700,2.4
