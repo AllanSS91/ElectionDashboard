@@ -43,8 +43,12 @@ async function loadDashboardData() {
       throw new Error("O arquivo CSV não possui registros válidos.");
     }
 
-    updateDashboard();
-    updateLastUpdateDate();
+    /* Exibe o dashboard antes de criar gráficos e mapa. */
+  showLoading(false);
+
+  updateDashboard();
+  updateLastUpdateDate();
+
   } catch (error) {
     showAlert(error.message, "danger");
     console.error("Erro ao carregar os dados:", error);
