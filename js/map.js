@@ -52,7 +52,8 @@ function initializeBrazilMap() {
   brazilMap = L.map("brazilMap", {
     zoomControl: true,
     attributionControl: false,
-    scrollWheelZoom: false
+    scrollWheelZoom: false,
+    zoomSnap: 0.25
   });
 
   brazilMap.setView([-14.235, -51.9253], 4);
@@ -140,11 +141,9 @@ function renderStatesLayer(polls) {
     }
   }).addTo(brazilMap);
 
-  brazilMap.fitBounds(brazilStatesLayer.getBounds(), {
-    padding: [15, 15]
-  });
-
-  setTimeout(() => brazilMap.invalidateSize(), 300);
+  setTimeout(() => {
+    refreshBrazilMapForExport();
+  }, 300);
 }
 
 /**
@@ -272,4 +271,25 @@ function normalizeStateName(text) {
     .replace(/[\u0300-\u036f]/g, "")
     .toUpperCase()
     .trim();
+}
+
+/**
+ * Recalcula o tamanho e o enquadramento do mapa.
+ * Usada também antes das exportações.
+ */
+function refreshBrazilMapForExport() {
+  if (!brazilMap || !brazilStatesLayer) {
+    return;
+  }
+
+  brazilMap.invalidateSize({
+    pan: false,
+    animate: false
+  });
+
+  brazilMap.fitBounds(brazilStatesLayer.getBounds(), {
+    padding: [8, 8],
+    maxZoom: 4.5,
+    animate: false
+  });
 }
