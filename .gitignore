@@ -1,9 +1,23 @@
-# Arquivos do sistema
-.DS_Store
-Thumbs.db
+# Python
+__pycache__/
+*.py[cod]
 
-# Configurações locais do VS Code
+# Virtual Environment
+.venv/
+venv/
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+temp/
+
+# VS Code
 .vscode/
 
-# Arquivos temporários e logs
-*.log
+# Windows
+Thumbs.db
+
+# macOS
+.DS_Store
