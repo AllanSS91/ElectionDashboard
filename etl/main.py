@@ -12,6 +12,7 @@ from extractor import extract_csv
 from logger import get_logger
 from transformer import transform
 from validator import validate
+from exporter import export_csv
 
 logger = get_logger()
 
@@ -45,6 +46,11 @@ def main() -> int:
         validate(df)
 
         logger.info("Validação concluída com sucesso.")
+
+        logger.info("Exportando CSV...")
+        export_csv(df)
+
+        logger.info("Exportação concluída.")
         logger.info("ETL finalizado com sucesso.")
 
         return 0
